@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AGENTS.md template for AI coding agents (with a verify loop)</title>
+  <meta name="description" content="A copy-paste AGENTS.md template that keeps AI coding agents on-rails: read order, conventions, scope rules, commit discipline, and a Definition of Done backed by a verify script.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a href="index.html"><strong>Ship Kit</strong></a>
+  <a href="agents-md-template.html">AGENTS.md template</a>
+  <a href="stop-scope-creep.html">Stop scope creep</a>
+  <a href="definition-of-done.html">Definition of Done</a>
+</nav>
+
+<main class="page">
+  <p class="byline">Ship Kit guide · 2026-10-20 · 4 min read</p>
+  <h1>AGENTS.md template for AI coding agents (with a verify loop)</h1>
+
+  <p><code>AGENTS.md</code> is a plain markdown file at your repo root that tells
+  any AI coding agent how to behave in <em>this</em> project: what stack it is,
+  what the rules are, what "done" means, and what it may never touch. Think of
+  it as a README written for a very fast, very literal new hire who has never
+  met you.</p>
+
+  <p>The template below is the actual contract that ships in
+  <a href="https://github.com/Tanix420/ship-kit">Ship Kit lite</a> — free, MIT,
+  working, and tested. Copy it, or clone the repo and get it plus a demo app
+  that already passes its own gate.</p>
+
+  <h2>The template</h2>
+  <pre><code># AGENTS.md — project contract
+
+This file is the single source of truth for any AI agent working here.
+If any other file conflicts with this one, this file wins.
+
+## 0. Read order
+1. AGENTS.md (this file)
+2. PLAN.md (current scope — what is allowed to exist)
+3. README.md (how to run things)
+
+## 1. The verification loop (most important rule)
+You are NOT done when the code looks right. You are done when:
+
+    ./verify.sh
+
+exits 0 and prints ALL CHECKS PASSED.
+- Run it after every change, before you report anything.
+- If it fails: fix the code and re-run. If it fails twice for the same
+  reason, STOP and report the exact error. Do not keep guessing.
+- Never edit a test just to make it pass. If a test looks wrong, say so
+  in one sentence and ask the owner.
+
+## 2. Scope guard
+- Implement only features listed in PLAN.md.
+- A feature not in PLAN.md does not exist. Propose it under "Proposed"
+  and ask the owner. Do not implement it "while you're in there".
+- One feature per task. No drive-by refactors.
+
+## 3. Conventions
+- Stack: [YOUR STACK HERE]. Dependencies: [none by default].
+- Tests live in [test/] using [YOUR RUNNER]. Run: [COMMAND].
+- Build outputs to [dist/] (never commit it).
+- File names: kebab-case. Functions: small, named, boring on purpose.
+- Comments explain WHY, not WHAT.
+- No new dependencies without a PLAN.md decision by the owner.
+
+## 4. Never touch without owner approval
+- Dependency manifests (package.json / requirements.txt / go.mod)
+- CI configs (.github/), LICENSE, this file's rules
+
+## 5. Commit discipline
+- Conventional commits: feat:, fix:, docs:, chore:, test:.
+- One logical change per commit. verify.sh green before every commit.
+
+## 6. Definition of Done
+- [ ] ./verify.sh exits 0
+- [ ] New behavior has a test
+- [ ] PLAN.md status updated
+- [ ] No TODO/FIXME left in the diff
+- [ ] Honest summary: what you did, what you didn't, what's untested</code></pre>
+
+  <h2>Why the verify loop is the part people skip</h2>
+  <p>Most AGENTS.md files you'll find online are style guides: naming, tone,
+  folder layout. Fine — but they don't change the failure that costs you days:
+  the agent <em>believing it is done</em>. The fix is to make "done" external
+  and observable. A script that runs syntax checks, tests, and a build, exits
+  non-zero on any failure, and whose full output the agent must paste back to
+  you, converts "trust me, it works" into evidence you can read in ten seconds.</p>
+
+  <h2>Which tools read it?</h2>
+  <p>OpenAI Codex reads <code>AGENTS.md</code> as a standard. Other tools use
+  their own entry files (Claude Code reads <code>CLAUDE.md</code>; Cursor has
+  its own rules files). The pattern that works everywhere: keep one
+  <code>AGENTS.md</code> as the source of truth, and make the tool-specific
+  files thin pointers to it — one line, "read AGENTS.md, it wins on conflict".
+  Ship Kit ships that pointer file too, so you never maintain two rulebooks.</p>
+
+  <div class="next">
+    <p><strong>Next:</strong> pair this with the scope guard —
+    <a href="stop-scope-creep.html">how to stop AI agent scope creep</a> — and
+    the gate itself, <a href="definition-of-done.html">a Definition of Done
+    your agent can't fake</a>.</p>
+    <p><a class="button" href="https://github.com/Tanix420/ship-kit">Clone Ship Kit lite (free)</a></p>
+  </div>
+</main>
+
+<footer>
+  <p>Built in the open · <a href="https://github.com/Tanix420/ship-kit">GitHub</a> · Last updated 2026-10-20</p>
+</footer>
+</body>
+</html>

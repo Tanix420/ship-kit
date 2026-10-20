@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ship Kit — stop re-explaining your project to your AI agent</title>
+  <meta name="description" content="Ship Kit is an agent-ready repo template: an AGENTS.md contract, a verify.sh gate the agent can't skip, tests, and a build path. Clone the free lite kit and ship tonight.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a href="index.html"><strong>Ship Kit</strong></a>
+  <a href="agents-md-template.html">AGENTS.md template</a>
+  <a href="stop-scope-creep.html">Stop scope creep</a>
+  <a href="definition-of-done.html">Definition of Done</a>
+</nav>
+
+<main>
+  <section class="hero">
+    <h1>Stop re-explaining your project to your AI agent.</h1>
+    <p class="sub">
+      You give the agent a task. It writes code, ignores your conventions,
+      skips tests, wanders off-scope — then tells you it's done. Ship Kit is a
+      repo template that fixes this with <strong>one file and one script</strong>:
+      an <code>AGENTS.md</code> contract the agent reads first, and a
+      <code>verify.sh</code> gate it can't talk its way past.
+    </p>
+    <p class="cta">
+      <a class="button" href="https://github.com/Tanix420/ship-kit">Clone the free kit on GitHub</a>
+      <span class="note">MIT licensed. Zero dependencies. Node ≥ 18.</span>
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>The three failures it fixes</h2>
+    <ol>
+      <li><strong>Conventions evaporate.</strong> Every new session, you re-explain the stack, the layout, the rules. <code>AGENTS.md</code> makes the rules a file, not a memory.</li>
+      <li><strong>"Done" is a feeling.</strong> The agent says finished; nothing is verified. <code>verify.sh</code> makes done an exit code: syntax check → tests → build, or loud failure.</li>
+      <li><strong>Scope creep.</strong> You ask for a button; you get a redesign. <code>PLAN.md</code> is the scope of record — if it's not in the table, the agent doesn't build it.</li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>What's inside the free kit</h2>
+    <ul>
+      <li><code>AGENTS.md</code> — the agent contract: read order, conventions, scope rules, commit discipline, Definition of Done.</li>
+      <li><code>verify.sh</code> — the gate. Prints <code>ALL CHECKS PASSED</code> or fails loudly. No npm required.</li>
+      <li><code>PLAN.md</code> — scope of record with a "Proposed" lane for agent ideas.</li>
+      <li>A working zero-dependency demo app — built-in <code>node:test</code>, static server + JSON endpoint + security guard.</li>
+      <li><code>prompts.md</code> — six copy-paste prompts that enforce the contract.</li>
+      <li><code>CLAUDE.md</code> — thin pointer so Claude Code picks the contract up natively.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Verified, not promised</h2>
+    <p>Before publishing, the author ran on Node v18.20.4:</p>
+    <ul>
+      <li><code>./verify.sh</code> → exit 0, <code>ALL CHECKS PASSED</code></li>
+      <li>4/4 tests pass (<code>node --test</code>)</li>
+      <li>Live smoke test: <code>GET /</code> → 200, <code>GET /api/health</code> → <code>{"ok":true}</code>, unknown path → 404, path traversal → blocked</li>
+    </ul>
+    <p class="note">If any claim here is wrong, open a GitHub issue. That's a bug in the product, and it will be fixed in public.</p>
+  </section>
+
+  <section class="card">
+    <h2>How you use it (10 minutes)</h2>
+    <ol>
+      <li>Clone the repo as the starting point of your project.</li>
+      <li>Run <code>./verify.sh</code> — see the gate pass before you touch anything.</li>
+      <li>Open the folder with your AI agent and give it <strong>one</strong> task from <code>PLAN.md</code>.</li>
+      <li>Require the <code>verify.sh</code> output pasted in the agent's reply. That's the loop. It never turns off.</li>
+    </ol>
+    <p class="cta"><a class="button" href="https://github.com/Tanix420/ship-kit">Get the free kit →</a></p>
+  </section>
+
+  <section class="card">
+    <h2>A paid full kit is planned</h2>
+    <p>The free repo is the complete core loop. A paid version (GitHub Actions CI checks, Cursor/Claude instruction variants, release checklist, extra prompt playbooks, a second template) is planned. <strong>There is no buy link yet because checkout doesn't exist yet.</strong> When it does, it will be linked here and in the repo README.</p>
+  </section>
+</main>
+
+<footer>
+  <p>Built in the open · <a href="https://github.com/Tanix420/ship-kit">GitHub</a> · Last updated 2026-10-20</p>
+</footer>
+</body>
+</html>

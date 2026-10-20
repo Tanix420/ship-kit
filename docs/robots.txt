@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://Tanix420.github.io/ship-kit/sitemap.xml

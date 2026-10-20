@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to stop AI agent scope creep (the PLAN.md pattern)</title>
+  <meta name="description" content="You asked for a button; the agent refactored your app. The PLAN.md scope-of-record pattern stops AI agent scope creep — with copy-paste rules and a prompt that enforces them.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a href="index.html"><strong>Ship Kit</strong></a>
+  <a href="agents-md-template.html">AGENTS.md template</a>
+  <a href="stop-scope-creep.html">Stop scope creep</a>
+  <a href="definition-of-done.html">Definition of Done</a>
+</nav>
+
+<main class="page">
+  <p class="byline">Ship Kit guide · 2026-10-20 · 3 min read</p>
+  <h1>How to stop AI agent scope creep (the PLAN.md pattern)</h1>
+
+  <p>The classic vibe-coding disaster: you ask for a dark-mode toggle. Twenty
+  minutes later the agent has renamed half your files, "improved" three
+  unrelated modules, and the original button is a checkbox in a settings page
+  you never asked for. Nothing is broken, exactly. Nothing is finished,
+  either.</p>
+
+  <p>The cause is not stupidity — it's that "fix what you see" is a reasonable
+  default for a helpful assistant and a terrible default for a contributor.
+  Agents don't have a concept of <em>authorized work</em>. So give them one:
+  a file that defines what is allowed to exist.</p>
+
+  <h2>The pattern: PLAN.md, scope of record</h2>
+  <pre><code># PLAN.md — scope of record
+
+**Rule for agents:** if it is not in this table, do not build it.
+Propose by adding a row under "Proposed" and asking the owner.
+
+| # | Feature                          | Status   | Notes |
+|---|----------------------------------|----------|-------|
+| 1 | Static page served from public/  | shipped  |       |
+| 2 | GET /api/health JSON endpoint    | shipped  |       |
+| 3 | Dark-mode toggle                 | proposed | waiting approval |
+
+## Definition of shipped
+verify.sh green + a test covering the feature + this table updated.</code></pre>
+
+  <p>Three rules do all the work:</p>
+  <ol>
+    <li><strong>Not in the table = doesn't exist.</strong> The agent may not implement ideas, only rows.</li>
+    <li><strong>Ideas go to "Proposed", never to code.</strong> The agent's good ideas are welcome — as a proposal you approve.</li>
+    <li><strong>One row per task.</strong> Drive-by refactors are out of scope by definition.</li>
+  </ol>
+
+  <h2>The prompt that enforces it</h2>
+  <pre><code>Before you write any code: list the exact feature(s) from PLAN.md you
+are about to implement. If your planned work includes anything not in
+PLAN.md, add it to "Proposed" and ask me first. Do not refactor files
+unrelated to this task.</code></pre>
+
+  <p>Why it works: it forces a plan <em>before</em> generation, when it's cheap
+  to correct, instead of a diff <em>after</em>, when you're negotiating with
+  your own codebase. Pair it with the read-order rule in
+  <a href="agents-md-template.html">AGENTS.md</a> (PLAN.md is file #2 the agent
+  reads) so the agent can't claim it never saw it.</p>
+
+  <h2>Where this pattern comes from</h2>
+  <p>It ships as a working file in <a href="https://github.com/Tanix420/ship-kit">Ship
+  Kit lite</a> — free, MIT, with a demo app, a verification gate, and prompts
+  like the one above. Clone it and your agent inherits the scope discipline on
+  commit one.</p>
+
+  <div class="next">
+    <p><strong>Next:</strong> <a href="definition-of-done.html">the Definition of Done gate that makes "done" an exit code</a>.</p>
+    <p><a class="button" href="https://github.com/Tanix420/ship-kit">Clone Ship Kit lite (free)</a></p>
+  </div>
+</main>
+
+<footer>
+  <p>Built in the open · <a href="https://github.com/Tanix420/ship-kit">GitHub</a> · Last updated 2026-10-20</p>
+</footer>
+</body>
+</html>

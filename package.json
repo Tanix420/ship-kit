@@ -1,0 +1,16 @@
+{
+  "name": "ship-kit-lite",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Ship Kit lite — an agent-ready repo: AGENTS.md contract + verify.sh loop + zero-dependency Node server. MIT.",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/",
+    "build": "node scripts/build.js",
+    "verify": "./verify.sh"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

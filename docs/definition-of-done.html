@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Definition of Done for AI-written code: make verify.sh the gate</title>
+  <meta name="description" content="AI agents declare done when the code looks right. Fix it with an external gate: a verify script whose full output the agent must paste back. Copy-paste script and report prompt inside.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a href="index.html"><strong>Ship Kit</strong></a>
+  <a href="agents-md-template.html">AGENTS.md template</a>
+  <a href="stop-scope-creep.html">Stop scope creep</a>
+  <a href="definition-of-done.html">Definition of Done</a>
+</nav>
+
+<main class="page">
+  <p class="byline">Ship Kit guide · 2026-10-20 · 4 min read</p>
+  <h1>Definition of Done for AI-written code: make verify.sh the gate</h1>
+
+  <p>Ask an AI agent "is it done?" and you get a confident paragraph. The
+  problem isn't lying — it's that the agent's definition of done is
+  <em>internal</em>: the code compiles, it looks right, it seems to work. The
+  fix is not a better prompt. It's moving the definition of done outside the
+  agent, into something you both have to look at.</p>
+
+  <h2>The gate</h2>
+  <p>A single script at the repo root. It runs every check you'd run yourself —
+  syntax, tests, build — and exits non-zero if anything fails. This is the
+  actual one from <a href="https://github.com/Tanix420/ship-kit">Ship Kit lite</a>
+  (bash + Node ≥ 18, no npm required):</p>
+
+  <pre><code>#!/usr/bin/env bash
+# verify.sh — the gate. Not "done" until this exits 0.
+set -euo pipefail
+cd "$(dirname "$0")"
+
+fail() { echo "VERIFY FAILED: $1" >&2; exit 1; }
+
+command -v node >/dev/null 2>&1 || fail "Node.js not found (need >=18)"
+NODE_MAJOR="$(node -p 'process.versions.node.split(".")[0]')"
+[ "$NODE_MAJOR" -ge 18 ] || fail "Node.js >=18 required"
+
+echo "[1/3] Syntax check (node --check on all repo JS)..."
+while IFS= read -r -d '' f; do
+  node --check "$f" || fail "syntax error in $f"
+done < <(find . -path ./dist -prune -o -name '*.js' \
+  -not -path './node_modules/*' -print0)
+
+echo "[2/3] Tests (node:test)..."
+node --test test/ || fail "tests failed"
+
+echo "[3/3] Build (public/ -> dist/)..."
+node scripts/build.js || fail "build failed"
+
+echo ""
+echo "ALL CHECKS PASSED — verified $(date -u '+%Y-%m-%dT%H:%M:%SZ')"</code></pre>
+
+  <h2>The two rules that make it bite</h2>
+  <ol>
+    <li><strong>Paste, don't summarize.</strong> The agent must include the
+    full <code>verify.sh</code> output in its reply. A summary can be invented;
+    a paste with real output and timestamps is evidence.</li>
+    <li><strong>Two-strikes stop.</strong> If the gate fails twice for the same
+    reason, the agent must stop and show you the exact error. This kills the
+    doom-loop where an agent "fixes" the same bug eight ways and then edits
+    the test to go green.</li>
+  </ol>
+
+  <h2>The report prompt</h2>
+  <pre><code>Report: (1) what you changed, (2) which PLAN.md row this maps to,
+(3) the final verify.sh output pasted verbatim, (4) anything you did
+NOT test, (5) any TODO/FIXME you left and why. If any answer is "none",
+say "none" — do not pad.</code></pre>
+
+  <p>"Do not pad" matters. Agents pad reports because padding reads as
+  competence. Rewarding "none" over a paragraph of nothing is how you train
+  the loop you actually want: small honest diffs that pass a gate you control.</p>
+
+  <h2>Get the whole loop, working</h2>
+  <p>Ship Kit lite ships this gate plus a demo app that already passes it, a
+  test suite, the scope-guard file, and the prompt pack. Free, MIT:</p>
+  <p><a class="button" href="https://github.com/Tanix420/ship-kit">Clone Ship Kit lite on GitHub</a></p>
+
+  <div class="next">
+    <p><strong>Related:</strong> <a href="agents-md-template.html">the AGENTS.md template</a> that wires this gate into every task, and <a href="stop-scope-creep.html">the PLAN.md pattern that stops scope creep</a>.</p>
+  </div>
+</main>
+
+<footer>
+  <p>Built in the open · <a href="https://github.com/Tanix420/ship-kit">GitHub</a> · Last updated 2026-10-20</p>
+</footer>
+</body>
+</html>
